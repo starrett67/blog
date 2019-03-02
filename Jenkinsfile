@@ -14,6 +14,7 @@ pipeline{
             }
         }
         stage("deploy") {
+            when()
             steps {
                 sh "aws s3 cp public s3://${DEPLOY_BUCKET}"
             }
@@ -21,7 +22,7 @@ pipeline{
     }
     post{
         always{
-            deleteWs()
+            cleanWs()
         }
         success{
             echo "========pipeline executed successfully ========"
