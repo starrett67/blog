@@ -4,9 +4,6 @@ pipeline{
         STRAPI_USER = credentials('STRAPI_USER')
         STRAPI_PASSWORD = credentials('STRAPI_PASSWORD')
     }
-    agent{
-        docker { image 'node:dubnium' }
-    }
     stages{
         stage("build"){
             steps {
