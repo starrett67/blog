@@ -1,4 +1,12 @@
-const path = require(`path`)
+const path = require(`path`)// gatsby-node.js
+const crypto = require(`crypto`)
+
+const digest = data => {
+  return crypto
+    .createHash(`md5`)
+    .update(JSON.stringify(data))
+    .digest(`hex`)
+}
 
 const makeRequest = (graphql, request) =>
   new Promise((resolve, reject) => {
@@ -14,6 +22,24 @@ const makeRequest = (graphql, request) =>
     )
   })
 
+exports.onCreateNode = ({ node, actions }) => {
+  const { createNode } = actions
+  if (node.internal.type === 'StrapiArticle') {
+    console.log('CREATING MARKDOWN NODE')
+    createNode({
+      ...node,
+      id: node.id + '-markdown',
+      parent: node.id,
+      children: [],
+      internal: {
+        type: 'Article',
+        mediaType: 'text/markdown',
+        content: node.content,
+        contentDigest: digest(node)
+      }
+    })
+  }
+}
 // Implement the Gatsby API “createPages”. This is called once the
 // data layer is bootstrapped to let plugins create pages from data.
 exports.createPages = ({ actions, graphql }) => {
@@ -23,7 +49,7 @@ exports.createPages = ({ actions, graphql }) => {
     graphql,
     `
     {
-      allStrapiArticle {
+      allArticle {
         edges {
           node {
             id
@@ -34,7 +60,7 @@ exports.createPages = ({ actions, graphql }) => {
     `
   ).then(result => {
     // Create pages for each article.
-    result.data.allStrapiArticle.edges.forEach(({ node }) => {
+    result.data.allArticle.edges.forEach(({ node }) => {
       createPage({
         path: `/articles/${node.id}`,
         component: path.resolve(`src/templates/article.js`),
