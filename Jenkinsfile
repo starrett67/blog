@@ -14,7 +14,9 @@ pipeline{
             }
         }
         stage("deploy") {
-            when()
+            when {
+                branch 'master'
+            }
             steps {
                 sh "aws s3 cp public s3://${DEPLOY_BUCKET}"
             }
