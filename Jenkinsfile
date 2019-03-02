@@ -1,7 +1,7 @@
 pipeline{
     environment {
-        DEPLOY_BUCKET = credentials('DEPLOY_BUCKET'),
-        STRAPI_USER = credentials('STRAPI_USER'),
+        DEPLOY_BUCKET = credentials('DEPLOY_BUCKET')
+        STRAPI_USER = credentials('STRAPI_USER')
         STRAPI_PASSWORD = credentials('STRAPI_PASSWORD')
     }
     agent{
