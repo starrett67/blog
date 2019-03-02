@@ -17,7 +17,7 @@ pipeline{
                 branch 'master'
             }
             steps {
-                sh "aws s3 cp public s3://${DEPLOY_BUCKET}"
+                sh "aws s3 sync public s3://${DEPLOY_BUCKET} --delete"
             }
         }
     }
