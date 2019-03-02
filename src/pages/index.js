@@ -12,7 +12,7 @@ const IndexPage = ({ data }) => (
       {data.allStrapiArticle.edges.map(document => (
         <li key={document.node.id}>
           <h2>
-            <Link to={`/${document.node.id}`}>{document.node.title}</Link>
+            <Link to={`/articles/${document.node.id}`}>{document.node.title}</Link>
           </h2>
           <Img fixed={document.node.image.childImageSharp.fixed} />
           <p>{document.node.content}</p>
